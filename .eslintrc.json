@@ -1,0 +1,57 @@
+{
+  // "ignores": ["dist"],
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    // "plugin:@typescript-eslint/recommended",
+    "react-app",
+    "react-app/jest"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+      },
+      "globals": {
+        "browser": true
+      },
+      "plugins": ["react-refresh", "unused-imports", "import"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "import/order": [
+          "error",
+          {
+            "groups": [
+              "builtin",
+              "external",
+              "internal",
+              "parent",
+              "sibling",
+              "index",
+              "unknown"
+            ],
+            "pathGroups": [
+              {
+                "pattern": "{react,react-dom/**,react-router-dom}",
+                "group": "builtin",
+                "position": "before"
+              }
+            ],
+            "pathGroupsExcludedImportTypes": ["builtin"],
+            "alphabetize": {
+              "order": "asc"
+            }
+          }
+        ],
+        "unused-imports/no-unused-imports": "warn",
+        "react-refresh/only-export-components": [
+          "warn",
+          { "allowConstantExport": true }
+        ]
+      }
+    }
+  ]
+}

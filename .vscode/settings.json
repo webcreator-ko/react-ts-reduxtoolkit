@@ -1,0 +1,31 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  "eslint.validate": [
+    "html",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "css.validate": false,
+  "scss.validate": false,
+  "stylelint.enable": true,
+  "stylelint.validate": ["css", "scss"],
+  "cSpell.import": ["../cspell.json"],
+  "cSpell.enabledLanguageIds": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact",
+    "html",
+    "css",
+    "scss"
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "css.lint.unknownAtRules": "ignore",
+  "i18n-ally.localesPaths": ["messages"]
+}
