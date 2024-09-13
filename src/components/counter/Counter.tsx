@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 import {
   decrement,
@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export const Counter = () => {
   const dispatch = useAppDispatch();
-  const count = useAppSelector(selectCount) as ReactNode;
+  const count = useAppSelector(selectCount);
   const status = useAppSelector(selectStatus);
   const [incrementAmount, setIncrementAmount] = useState('2');
 

@@ -1,10 +1,11 @@
 import {
   createAsyncThunk,
+  createSelector,
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
 import { fetchCount } from '../components/counter/counterAPI';
-import { AppThunk } from '@/store';
+import { AppThunk, RootState } from '@/store';
 
 export interface CounterSliceState {
   value: number;
@@ -58,10 +59,10 @@ export const counterSlice = createSlice({
       });
   },
   // セレクタをここで定義することができます。セレクタは、スライスの状態を最初の引数として受け取ります。
-  selectors: {
-    selectCount: (counter) => counter.value,
-    selectStatus: (counter) => counter.status,
-  },
+  // selectors: {
+  //   selectCount: (counter) => counter.value,
+  //   selectStatus: (counter) => counter.status,
+  // },
 });
 
 export const incrementAsync = createAsyncThunk(
@@ -75,8 +76,19 @@ export const incrementAsync = createAsyncThunk(
 // 各リデューサー関数に対してアクションクリエーターが生成されます
 export const { decrement, increment, incrementByAmount } = counterSlice.actions;
 
-// `slice.selectors` によって返されるセレクタは、最初の引数としてルート状態を受け取ります
-export const { selectCount, selectStatus } = counterSlice.selectors;
+// 基本セレクター
+const selectCounter = (state: RootState) => state.counter;
+
+// メモ化されたセレクター
+export const selectCount = createSelector(
+  [selectCounter],
+  (counter) => counter.value
+);
+
+export const selectStatus = createSelector(
+  [selectCounter],
+  (counter) => counter.status
+);
 
 // 同期および非同期のロジックを含むthunkを手動で作成することもできます。
 // 以下は、現在の状態に基づいてアクションを条件付きでディスパッチする例です。
