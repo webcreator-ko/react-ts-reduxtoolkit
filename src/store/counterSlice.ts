@@ -50,6 +50,7 @@ export const counterSlice = createSlice({
       .addCase(incrementAsync.pending, (state) => {
         state.status = 'loading';
       })
+      // fulfilled は成功を表す
       .addCase(incrementAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.value += action.payload;
@@ -73,6 +74,18 @@ export const incrementAsync = createAsyncThunk(
   }
 );
 
+// 同期および非同期のロジックを含むthunkを手動で作成することもできます。
+// 以下は、現在の状態に基づいてアクションを条件付きでディスパッチする例です。
+export const incrementIfOdd =
+  (amount: number): AppThunk =>
+  (dispatch, getState) => {
+    const currentValue = selectCount(getState());
+
+    if (currentValue % 2 === 1 || currentValue % 2 === -1) {
+      dispatch(incrementByAmount(amount));
+    }
+  };
+
 // 各リデューサー関数に対してアクションクリエーターが生成されます
 export const { decrement, increment, incrementByAmount } = counterSlice.actions;
 
@@ -89,15 +102,3 @@ export const selectStatus = createSelector(
   [selectCounter],
   (counter) => counter.status
 );
-
-// 同期および非同期のロジックを含むthunkを手動で作成することもできます。
-// 以下は、現在の状態に基づいてアクションを条件付きでディスパッチする例です。
-export const incrementIfOdd =
-  (amount: number): AppThunk =>
-  (dispatch, getState) => {
-    const currentValue = selectCount(getState());
-
-    if (currentValue % 2 === 1 || currentValue % 2 === -1) {
-      dispatch(incrementByAmount(amount));
-    }
-  };
