@@ -1,22 +1,20 @@
 import type { Action, ThunkAction } from '@reduxjs/toolkit';
-import { combineSlices, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { counterApiSlice } from './counterApiSlice';
 import { counterSlice } from './counterSlice';
 import { quotesApiSlice } from './quotesApiSlice';
 
-// combineSlices は、状態（state）を管理するための関数で、複数の「スライス」を一つの大きな管理単位（リデューサー）に結合しています。
-// これによって、アプリ全体の状態を一箇所で管理できるようになります。
-const rootReducer = combineSlices(counterSlice, quotesApiSlice);
-// RootState は、アプリ全体の状態の型を定義しています。
-// この型を使うことで、どのようなデータが管理されているかを型として扱うことができ、ミスを減らせます。
+const rootReducer = combineReducers({
+  counter: counterSlice.reducer, // 通常のスライス
+  [quotesApiSlice.reducerPath]: quotesApiSlice.reducer, // createApiのリデューサー
+  [counterApiSlice.reducerPath]: counterApiSlice.reducer, // counterApiのレデューサー
+});
+
 export type RootState = ReturnType<typeof rootReducer>;
 
-// （ストアを作る関数）
-// makeStore は、アプリ全体で状態を管理する「ストア」を作るための関数です。ストアは、アプリのデータの中心的な場所で、他の部分からアクセスして操作します。
 export const makeStore = (preloadedState?: Partial<RootState>) => {
-  // Reduxの状態管理システムをセットアップするための関数です
   const store = configureStore({
-    // 先ほど結合した全体の状態管理（rootReducer）をストアにセットします。
     reducer: rootReducer,
 
     // Reduxのデータ管理を補助する機能を追加する部分で、

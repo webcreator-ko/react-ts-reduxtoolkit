@@ -74,14 +74,52 @@ export const incrementAsync = createAsyncThunk(
   }
 );
 
+// incrementAsync を使用する例
+// const Counter = () => {
+//   const dispatch = useDispatch();
+//   const count = useSelector(selectCount); // 現在のカウント値を取得
+//   const status = useSelector(selectStatus); // 非同期処理の状態を取得
+
+//   const handleAsyncIncrement = () => {
+//     dispatch(incrementAsync(5)); // 非同期アクションをトリガー
+//   };
+
+//   return (
+//     <div>
+//       <h1>カウント: {count}</h1>
+//       <p>ステータス: {status}</p>
+//       <button onClick={handleAsyncIncrement} disabled={status === 'loading'}>
+//         {status === 'loading' ? '読み込み中...' : '非同期でインクリメント'}
+//       </button>
+//       {status === 'failed' && <p>エラーが発生しました</p>}
+//     </div>
+//   );
+// };
+
+// 補足
+// dispatch(incrementAsync(5)) に await をつけることは可能です。
+// これは incrementAsync が createAsyncThunk によって作成されており、Promise を返す非同期アクションだからです
+// const handleAsyncIncrement = async () => {
+//   const result = await dispatch(incrementAsync(5)); // 完了まで待機
+//   if (incrementAsync.fulfilled.match(result)) {
+//     console.log("成功:", result.payload); // 成功時の処理
+//   } else if (incrementAsync.rejected.match(result)) {
+//     console.error("失敗:", result.error.message); // 失敗時の処理
+//   }
+// };
+
 // 同期および非同期のロジックを含むthunkを手動で作成することもできます。
 // 以下は、現在の状態に基づいてアクションを条件付きでディスパッチする例です。
+// incrementIfOdd は thunk 関数 なので、通常のアクションと同じように dispatch できます。
+// reducers や extraReducers は アクションに応じて状態を変更 する場所ですが、thunk はアクションの ディスパッチを制御 するものなので、
+// 直接スライス内に記述していなくても問題ありません。
 export const incrementIfOdd =
   (amount: number): AppThunk =>
-  (dispatch, getState) => {
+  async (dispatch, getState) => {
     const currentValue = selectCount(getState());
 
     if (currentValue % 2 === 1 || currentValue % 2 === -1) {
+      // const response = await someAsyncFunction(); // 非同期処理（例: API呼び出し）
       dispatch(incrementByAmount(amount));
     }
   };
