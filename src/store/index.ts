@@ -17,30 +17,10 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
   const store = configureStore({
     reducer: rootReducer,
 
-    // Reduxのデータ管理を補助する機能を追加する部分で、
-    // ここではquotesApiSlice.middlewareを追加して、API呼び出しやキャッシュの管理をサポートします。
-
-    // quotesApiSlice.middleware は、Redux Toolkit の configureStore の設定に渡されているため、自動的に実行されるものです。
-    // 具体的には、configureStore の middleware プロパティに渡すことで、ミドルウェアの連鎖に組み込まれ、Redux のアクションがディスパッチ（実行）されるたびに、
-    // 該当するミドルウェアが自動的に処理を行います。
-
-    // 詳しい説明：
-    // quotesApiSlice.middleware は、おそらく RTK Query（Redux Toolkit Query）の一部であり、
-    // APIの呼び出しやキャッシュの管理、データの取得・再取得などの便利な機能を提供するためのミドルウェアです。
-    // これが configureStore の middleware 配列に追加されることで、Redux のディスパッチが実行されたときに自動的に処理が実行されます。
-
-    // 流れのイメージ
-    // アクションのディスパッチ
-    // Redux で何かしらのアクション（状態の変更など）がディスパッチ（実行）される。
-
-    // ミドルウェアの自動実行
-    // quotesApiSlice.middleware が、ディスパッチされたアクションを監視し、API リクエストが必要かどうかを判断します。
-    // 必要であれば、API の呼び出しを行い、レスポンスが返ってきたら状態を更新します。
-
-    // 結論：
-    // quotesApiSlice.middleware は、ストアの設定時に自動的に登録され、Redux アクションがディスパッチされたときに自動で実行されます。特別な手動操作は必要ありません。
     middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat(quotesApiSlice.middleware);
+      return getDefaultMiddleware()
+        .concat(quotesApiSlice.middleware)
+        .concat(counterApiSlice.middleware);
     },
     // preloadedState は、アプリの初期データを必要に応じて指定できるオプションです。
     preloadedState,
